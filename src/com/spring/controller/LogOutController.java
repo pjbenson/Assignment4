@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.model.User;
 import com.spring.service.LoginService;
@@ -19,9 +20,9 @@ public class LogOutController {
 	public LoginService loginService;
 	
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logout(@ModelAttribute User user, HttpSession session) {
+    public ModelAndView logout(@ModelAttribute User user, HttpSession session) {
        loginService.logOut();
        session.removeAttribute("user");
-       return "index";
+       return new ModelAndView("redirect:/index.html");
     }
 }

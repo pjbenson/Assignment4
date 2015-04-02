@@ -13,7 +13,11 @@
 <meta name="author" content="">
 <link rel="icon" href="../../favicon.ico">
 
-<title>Login</title>
+<title>AddAccount</title>
+
+<!-- Bootstrap core CSS -->
+<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css">
 
 <!-- Bootstrap core CSS -->
 <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -31,6 +35,8 @@
 <body>
 
 	<div class="container">
+
+		<!-- Static navbar -->
 		<nav class="navbar navbar-default">
 			<div class="container-fluid">
 				<div class="navbar-header">
@@ -41,32 +47,11 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">Assignment 4</a>
+					<a class="navbar-brand" href="index.html">Assignment 4</a>
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
-					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="${pageContext.request.contextPath}/login.html">Login</a></li>
-						<li><a href="#">Contact</a></li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button" aria-expanded="false">Dropdown
-								<span class="caret"></span>
-						</a>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
-								<li class="divider"></li>
-								<li class="dropdown-header">Nav header</li>
-								<li><a href="#">Separated link</a></li>
-								<li><a href="#">One more separated link</a></li>
-							</ul></li>
-					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li class="active"><a href="./">Default <span
-								class="sr-only">(current)</span></a></li>
-						<li><a href="../navbar-static-top/">Static top</a></li>
-						<li><a href="../navbar-fixed-top/">Fixed top</a></li>
+						<li><a href="">${sessionScope.user.password}</a></li>
 					</ul>
 				</div>
 				<!--/.nav-collapse -->
@@ -74,24 +59,26 @@
 			<!--/.container-fluid -->
 		</nav>
 
+		<!-- Main component for a primary marketing message or call to action -->
 		<div class="jumbotron">
-			<div class="container">
-
-		<form:form method="POST" commandName="user" class="form-signin">
-			<h2 class="form-signin-heading">Log In</h2>
-			<form:input path="userName"  class="input-block-level" placeholder="UserName"/>
-			<form:password path="password" class="input-block-level" placeholder="Password" />
-			<input type="submit" value="Login" class="btn btn-large btn-success"/>
-		</form:form>
-
-	</div>
+			<h1>Add Account</h1>
+			<form:form method="POST" commandName="account" class="form-signin">
+				<form:input path="address" class="input-block-level"
+					placeholder="Address" />
+				<input type="submit" value="Submit" class="btn btn-large btn-success" />
+			</form:form>
 		</div>
-
 
 	</div>
 	<!-- /container -->
 
 
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="../../dist/js/bootstrap.min.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>

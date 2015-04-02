@@ -22,7 +22,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.bean.AccountBean;
 import com.spring.bean.UserBean;
 import com.spring.model.Account;
+import com.spring.model.Role;
+import com.spring.model.Stock;
 import com.spring.model.User;
+import com.spring.service.AccountService;
+import com.spring.service.LoginService;
+import com.spring.service.RoleService;
+import com.spring.service.StockService;
 import com.spring.service.UserService;
 
 @Controller
@@ -30,17 +36,41 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private LoginService loginService;
+	@Autowired
+	private RoleService roleService;
+	@Autowired
+	private StockService stockService;
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ModelAndView saveUser(@ModelAttribute("command") UserBean userBean, BindingResult result) {
 		User user = prepareModel(userBean);
-		userService.addUser(user);
-		return new ModelAndView("redirect:/loginform.html");
+		User checkIfUserExists = loginService.checkLogin(user.getUserName(), user.getPassword());
+		Role role_user = roleService.getRole(2);
+		if(checkIfUserExists == null){
+			user.setRole(role_user);
+			userService.addUser(user);
+			return new ModelAndView("redirect:/loginform.html");
+		}
+		else{
+			return new ModelAndView("redirect:/register.html");
+		}
 	}
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public ModelAndView showProfile() {
 		return new ModelAndView("profile");
+	}
+	
+	@RequestMapping(value = "/adminProfile", method = RequestMethod.GET)
+	public ModelAndView showAdminProfile(ModelMap model) {
+		List<User> users = userService.userList();
+		List<Stock> stock = stockService.getAllStock();
+		
+		model.addAttribute("users", users);
+		model.addAttribute("stock", stock);
+		return new ModelAndView("adminProfile");
 	}
 	
 	@RequestMapping(value="/users", method = RequestMethod.GET)
@@ -55,6 +85,23 @@ public class UserController {
 		Account acc = new Account();
 		model.addAttribute("account", acc);
 		return new ModelAndView("updateBalance");
+	}
+	
+	@RequestMapping(value = "/addAccount", method = RequestMethod.GET)
+	public String showAddAccount(ModelMap model){
+		Account acc = new Account();
+		model.addAttribute("account", acc);
+		return "addAccount";
+	}
+	
+	@RequestMapping(value = "/addAccount", method = RequestMethod.POST)
+	public ModelAndView addAccount(@ModelAttribute("account")Account acc, Map model){
+		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
+		User u = userService.getUser(user.getId());
+		u.getAccount().setAddress(acc.getAddress());
+		userService.updateBalance(u);
+		model.put("user", u);
+		return new ModelAndView("redirect:/profile.html");
 	}
 	
 //	@RequestMapping(value = "/updateBalance", method = RequestMethod.POST)
@@ -87,14 +134,12 @@ public class UserController {
 	}
 	
 	private User prepareModel(UserBean userBean){
-//		Account acc = new Account();
-//		acc.setBalance(0.0);
 		User user = new User();
+		Account acc = new Account();
+		acc.setAddress("");
 		user.setUserName(userBean.getUserName());
 		user.setPassword(userBean.getPassword());
-		user.setId(userBean.getId());
-//		user.setAccount(acc);
-		userBean.setId(null);
+		user.setAccount(acc);
 		return user;
 	}
 	
@@ -112,14 +157,5 @@ public class UserController {
 			}
 		}
 		return beans;
-	}
-	
-	private UserBean prepareUserBean(User user){
-		UserBean bean = new UserBean();
-		bean.setId(user.getId());
-		bean.setPassword(user.getPassword());
-		bean.setUserName(user.getUserName());
-		
-		return bean;
 	}
 }

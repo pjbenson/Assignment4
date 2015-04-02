@@ -40,6 +40,8 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 				<value>com.spring.model.User</value>
 				<value>com.spring.model.Role</value>
 				<value>com.spring.model.Account</value>
+				<value>com.spring.model.Category</value>
+				<value>com.spring.model.Stock</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

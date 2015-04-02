@@ -3,7 +3,6 @@ package com.spring.controller;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,11 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.bean.UserBean;
-import com.spring.model.LoginForm;
 import com.spring.model.User;
 import com.spring.service.LoginService;
-import com.spring.service.UserService;
 
 @Controller
 @SessionAttributes("user")
@@ -39,24 +35,24 @@ public class LoginController {
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST)
-	public String processForm(@ModelAttribute("user") User user, BindingResult result, Map model, HttpSession sessionObj) {
+	public ModelAndView processForm(@ModelAttribute("user") User user, BindingResult result, Map model, HttpSession sessionObj) {
 
 		if (result.hasErrors()) {
-			return "loginform";
+			return new ModelAndView("redirect:/loginform.html");
 		}
 		
 		User currentUser = loginService.checkLogin(user.getUserName(), user.getPassword());
 		if(currentUser != null && currentUser.getRole().getRole().equals("ROLE_USER")){
 			model.put("user", currentUser);
-			return "profile";
+			return new ModelAndView("redirect:/profile.html");
 		}
 		else if(currentUser != null && currentUser.getRole().getRole().equals("ROLE_ADMIN")){
 			model.put("user", currentUser);
-			return "adminProfile";
+			return new ModelAndView("redirect:/adminProfile.html");
 		}
 		else{
 			result.rejectValue("userName","invaliduser");
-			return "loginform";
+			return new ModelAndView("redirect:/loginform.html");
 		}
 	}
 }

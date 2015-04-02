@@ -15,7 +15,8 @@
 
 <title>Profile</title>
 
-<!-- Latest compiled and minified CSS --><style type="text/css">
+<!-- Latest compiled and minified CSS -->
+<style type="text/css">
 footer {
 	margin-top: 20px;
 	padding-top: 20px;
@@ -23,9 +24,11 @@ footer {
 	background-color: #efefef;
 }
 
-.container{width: 0 auto;
-margin: 0 auto;
-margin-left: 250px;}
+.container {
+	width: 0 auto;
+	margin: 0 auto;
+	margin-left: 250px;
+}
 
 /* count indicator near icons */
 .nav>li .count {
@@ -90,7 +93,6 @@ margin-left: 250px;}
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="">${sessionScope.user.userName}</a></li>
-						<li><a href="addAccount.html">Add Account</a></li>
 						<li><a href="${pageContext.request.contextPath}/logout.html">Logout</a></li>
 					</ul>
 				</div>
@@ -100,51 +102,60 @@ margin-left: 250px;}
 		</nav>
 
 		<!-- Main component for a primary marketing message or call to action -->
+
+		<div class="jumbotron">
+			<table class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th>User ID</th>
+						<th>Username</th>
+						<th>Billing Address</th>
+					</tr>
+				</thead>
+				<c:forEach items="${users}" var="user">
+					<tbody>
+						<c:if test="${sessionScope != null}">
+
+							<tr>
+								<td><c:out value="${user.id}" /></td>
+								<td><c:out value="${user.userName}" /></td>
+								<td><c:out value="${user.account.address}" /></td>
+							</tr>
+
+						</c:if>
+					</tbody>
+				</c:forEach>
+			</table>
+		</div>
 		
-			<div class="container">
-				<div class="row">
-					<div class="col-md-8 col-xs-10">
-						<div class="well panel panel-default">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-xs-12 col-sm-4 text-center">
-										<img src="bootstrap/img/photo.jpg" alt=""
-											class="center-block img-circle img-thumbnail img-responsive">
-										<ul class="list-inline ratings text-center" title="Ratings">
-											<li><a href="#"><span class="fa fa-star fa-lg"></span></a></li>
-											<li><a href="#"><span class="fa fa-star fa-lg"></span></a></li>
-											<li><a href="#"><span class="fa fa-star fa-lg"></span></a></li>
-											<li><a href="#"><span class="fa fa-star fa-lg"></span></a></li>
-											<li><a href="#"><span class="fa fa-star fa-lg"></span></a></li>
-										</ul>
-									</div>
-									<!--/col-->
-									<div class="col-xs-12 col-sm-8">
-										<h2>Profile</h2>
-										<p>
-											<strong>Username: ${sessionScope.user.userName}</strong>
-										</p>
-										<p>
-											<strong>Address: ${sessionScope.user.account.address}</strong>
-										</p>
-										<p>
-											<strong>Wallet: </strong><i class="glyphicon glyphicon-euro"></i>
-										</p>
-									</div>
-									<!--/col-->
-								</div>
-								<!--/row-->
-							</div>
-							<!--/panel-body-->
-						</div>
-						<!--/panel-->
-					</div>
-					<!--/col-->
-				</div>
-				<!--/row-->
-			</div>
-			<!--/container-->
-		
+		<div class="jumbotron">
+			<table class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Manufacturer</th>
+						<th>Category</th>
+						<th>Price</th>
+					</tr>
+				</thead>
+				<c:forEach items="${stock}" var="stock">
+					<tbody>
+						<c:if test="${sessionScope != null}">
+
+							<tr>
+								<td><c:out value="${stock.title}" /></td>
+								<td><c:out value="${stock.manufacturer}" /></td>
+								<td><c:out value="${stock.category.categoryTitle}" /></td>
+								<td><c:out value="${stock.price}" /></td>
+							</tr>
+
+						</c:if>
+					</tbody>
+				</c:forEach>
+			</table>
+			a
+		</div>
+
 
 	</div>
 	<!-- /container -->

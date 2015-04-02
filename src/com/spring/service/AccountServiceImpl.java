@@ -21,8 +21,8 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	@Override
-	public void addStrategyToAccount(Account acc) {
-		accountDao.addStrategyToAccount(acc);
+	public void addAccount(Account acc) {
+		accountDao.addAccount(acc);
 	}
 
 }

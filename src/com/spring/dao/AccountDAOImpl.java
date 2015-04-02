@@ -20,8 +20,8 @@ public class AccountDAOImpl implements AccountDAO {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void addStrategyToAccount(Account acc) {
-		sessionFactory.getCurrentSession().update(acc);
+	public void addAccount(Account acc) {
+		sessionFactory.getCurrentSession().saveOrUpdate(acc);
 	}
 
 }

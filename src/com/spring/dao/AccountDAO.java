@@ -6,5 +6,5 @@ public interface AccountDAO {
 
 	public Account getAccount(int id);
 	
-	public void addStrategyToAccount(Account acc);
+	public void addAccount(Account acc);
 }
