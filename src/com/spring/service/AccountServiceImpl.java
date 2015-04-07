@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.dao.AccountDAO;
 import com.spring.model.Account;
+import com.spring.template.CreditCard;
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -23,6 +24,17 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public void addAccount(Account acc) {
 		accountDao.addAccount(acc);
+	}
+
+	@Override
+	public void addCreditCard(CreditCard cc) {
+		accountDao.addCreditCard(cc);
+	}
+
+	@Override
+	public void updateAccount(Account acc) {
+		accountDao.updateAccount(acc);
+		
 	}
 
 }

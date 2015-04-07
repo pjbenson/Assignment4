@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 
 
 
+
 import com.spring.dao.UserDao;
 import com.spring.model.User;
 
@@ -30,8 +31,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void deleteUser(User user) {
-		userDao.deleteUser(user);
+	public void deleteUser(Integer userID) {
+		userDao.deleteUser(userID);
 	}
 
 	@Override

@@ -14,7 +14,8 @@
 <link rel="icon" href="../../favicon.ico">
 
 <title>AddAccount</title>
-<script type="text/javascript" src="bootstrap/dist/js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript"
+	src="bootstrap/dist/js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- Bootstrap core CSS -->
 <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -61,19 +62,33 @@
 
 		<!-- Main component for a primary marketing message or call to action -->
 		<div class="jumbotron">
-			<h1>Add Account</h1>
-			<form:form method="POST" commandName="account"
+			<h1>Add Credit Card Details</h1>
+			<form:form action="/Assignment4/addCard.html" method="post" commandName="creditCard"
 				class="form-horizontal">
-				<div class="form-group">
-					<div class="col-xs-3">
-						<form:input path="address" class="form-control"
-							placeholder="Address" />
-					</div>
-					<div class="form-group">
-						<input type="submit" value="Submit"
-							class="btn btn-large btn-success" />
-					</div>
-				</div>
+				<table border="0">
+					<tr>
+						<td>Card Number:</td>
+						<td><form:input path="cardNumber" /></td>
+
+					</tr>
+
+					<tr>
+						<td>Expiry Month:</td>
+						<td><form:password path="expiryMonth" /></td>
+					</tr>
+					<tr>
+						<td>Expiry Year:</td>
+						<td><form:input path="expiryYear" /></td>
+					</tr>
+					<tr>
+						<td>Card Type:</td>
+						<td><form:select path="cardType" items="${cardTypes}" /></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><input type="submit"
+							value="Add Card" /></td>
+					</tr>
+				</table>
 			</form:form>
 		</div>
 

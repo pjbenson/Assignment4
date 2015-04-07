@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.model.Account;
+import com.spring.template.CreditCard;
 
 @Repository("accountDAO")
 public class AccountDAOImpl implements AccountDAO {
@@ -22,6 +23,17 @@ public class AccountDAOImpl implements AccountDAO {
 	@Transactional(readOnly = false)
 	public void addAccount(Account acc) {
 		sessionFactory.getCurrentSession().saveOrUpdate(acc);
+	}
+
+	@Override
+	public void addCreditCard(CreditCard cc) {
+		sessionFactory.getCurrentSession().saveOrUpdate(cc);
+	}
+
+	@Override
+	public void updateAccount(Account acc) {
+		sessionFactory.getCurrentSession().update(acc);
+		
 	}
 
 }

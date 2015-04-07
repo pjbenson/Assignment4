@@ -14,5 +14,5 @@ public interface UserService {
 	
 	public List<User> userList();
 	
-	public void deleteUser(User user);
+	public void deleteUser(Integer userID);
 }

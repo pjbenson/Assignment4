@@ -54,26 +54,43 @@ footer {
 }
 </style>
 
-<!-- Bootstrap core CSS -->
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
-	type="text/css">
-
-<!-- Custom styles for this template -->
-<link href="navbar.css" rel="stylesheet" type="text/css">
-
-<!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-<script src="bootstrap/docs/assets/js/ie-emulation-modes-warning.js"
-	type="text/javascript"></script>
-
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<style type="text/css">
+.bs-example {
+	margin: 20px;
+}
+</style>
 </head>
 
 <body>
+
+	<div id="myModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Edit</h4>
+				</div>
+				<div class="modal-body">
+					<div class="col-xs-5"></div>
+				</div>
+				<div class="form-group"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 
 	<div class="container">
 
@@ -104,12 +121,15 @@ footer {
 		<!-- Main component for a primary marketing message or call to action -->
 
 		<div class="jumbotron">
+			<h2>Users</h2>
 			<table class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr>
 						<th>User ID</th>
 						<th>Username</th>
 						<th>Billing Address</th>
+						<th>Edit</th>
+						<th>Delete</th>
 					</tr>
 				</thead>
 				<c:forEach items="${users}" var="user">
@@ -120,6 +140,10 @@ footer {
 								<td><c:out value="${user.id}" /></td>
 								<td><c:out value="${user.userName}" /></td>
 								<td><c:out value="${user.account.address}" /></td>
+								<td><a href="#" class="btn btn-sm btn-success"
+									data-toggle="modal" data-target="#myModal">Edit</a></td>
+								<td><a href="<c:url value="/delete/${user.id}.html" />"
+									class="btn btn-info btn-sm">Delete</a></td>
 							</tr>
 
 						</c:if>
@@ -127,8 +151,30 @@ footer {
 				</c:forEach>
 			</table>
 		</div>
-		
+
+		<div class="modal fade" id="basicModal" tabindex="-1" role="dialog"
+			aria-labelledby="basicModal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Basic Modal</h4>
+					</div>
+					<div class="modal-body">
+						<h3>Modal Body</h3>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save
+							changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="jumbotron">
+			<h2>Stock</h2>
 			<table class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr>
@@ -146,28 +192,20 @@ footer {
 								<td><c:out value="${stock.title}" /></td>
 								<td><c:out value="${stock.manufacturer}" /></td>
 								<td><c:out value="${stock.category.categoryTitle}" /></td>
-								<td><c:out value="${stock.price}" /></td>
+								<td><c:out value="€${stock.price}" /></td>
 							</tr>
 
 						</c:if>
 					</tbody>
 				</c:forEach>
 			</table>
-			a
 		</div>
+
+		<div class="jumbotron"></div>
 
 
 	</div>
 	<!-- /container -->
 
-
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script src="../../dist/js/bootstrap.min.js"></script>
-	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-	<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>

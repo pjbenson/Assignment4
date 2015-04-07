@@ -5,6 +5,7 @@ import java.util.List;
 
 
 
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,8 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void deleteUser(User user) {
-		sessionFactory.getCurrentSession().createQuery("DELETE FROM User WHERE user_id = "+user.getId()).executeUpdate();
+	public void deleteUser(Integer userID) {
+		sessionFactory.getCurrentSession().createQuery("DELETE FROM User WHERE user_id = "+userID).executeUpdate();
 		
 	}
 

@@ -2,6 +2,7 @@ package com.spring.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +32,7 @@ import com.spring.service.LoginService;
 import com.spring.service.RoleService;
 import com.spring.service.StockService;
 import com.spring.service.UserService;
+import com.spring.template.CreditCard;
 
 @Controller
 public class UserController {
@@ -42,6 +45,8 @@ public class UserController {
 	private RoleService roleService;
 	@Autowired
 	private StockService stockService;
+	@Autowired
+	private AccountService accService;
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ModelAndView saveUser(@ModelAttribute("command") UserBean userBean, BindingResult result) {
@@ -59,7 +64,10 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
-	public ModelAndView showProfile() {
+	public ModelAndView showProfile(ModelMap model) {
+		List<Stock> stock = stockService.getAllStock();
+		
+		model.addAttribute("stock", stock);
 		return new ModelAndView("profile");
 	}
 	
@@ -87,6 +95,32 @@ public class UserController {
 		return new ModelAndView("updateBalance");
 	}
 	
+	@RequestMapping(value = "/addCard", method = RequestMethod.GET)
+	public String showAddCreditCard(ModelMap model){
+		CreditCard cc = new CreditCard();
+		List<String> cardTypes = new ArrayList<String>();
+		cardTypes.add("Visa");
+		cardTypes.add("MasterCard");
+		
+		model.addAttribute("cardTypes", cardTypes);
+		model.addAttribute("creditCard", cc);
+		return "addCard";
+	}
+	
+	@RequestMapping(value = "/addCard", method = RequestMethod.POST)
+	public ModelAndView addAccount(@ModelAttribute("creditCard")CreditCard cc, Map model){
+		System.out.println(cc.getCardNumber());
+		System.out.println(cc.getCardType());
+		System.out.println(cc.getExpiryMonth());
+		System.out.println(cc.getExpiryYear());
+		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
+		Account acc = accService.getAccount(user.getAccount().getId());
+		acc.addToCreditCardList(cc);
+		accService.addCreditCard(cc);
+		accService.updateAccount(acc);
+		return new ModelAndView("redirect:/profile.html");
+	}
+	
 	@RequestMapping(value = "/addAccount", method = RequestMethod.GET)
 	public String showAddAccount(ModelMap model){
 		Account acc = new Account();
@@ -101,7 +135,13 @@ public class UserController {
 		u.getAccount().setAddress(acc.getAddress());
 		userService.updateBalance(u);
 		model.put("user", u);
-		return new ModelAndView("redirect:/profile.html");
+		return new ModelAndView("redirect:/addCard.html");
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public ModelAndView handleSearch(@ModelAttribute("myObjectList")String user){
+		return null;
+		
 	}
 	
 //	@RequestMapping(value = "/updateBalance", method = RequestMethod.POST)
@@ -124,13 +164,22 @@ public class UserController {
 		return new ModelAndView("index");
 	}
 	
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView deleteUser(@ModelAttribute("command")  UserBean userBean, BindingResult result) {
-		userService.deleteUser(prepareModel(userBean));
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("user", null);
-		model.put("users",  prepareListofBean(userService.userList()));
-		return new ModelAndView("index", model);
+	@RequestMapping("/delete/{id}")
+	public ModelAndView deleteUser(@PathVariable("id") Integer id) {
+		userService.deleteUser(id);
+		return new ModelAndView("redirect:/adminProfile.html");
+	}
+	
+	@RequestMapping(value="/edit", method=RequestMethod.GET)
+	public ModelAndView editPage(ModelMap model) {
+		User user = new User();
+		model.addAttribute("user",user);
+		return new ModelAndView("adminProfile");
+	}
+	
+	@RequestMapping(value="/edit", method = RequestMethod.POST)
+	public ModelAndView editUser(@ModelAttribute User user){
+		return null;
 	}
 	
 	private User prepareModel(UserBean userBean){
