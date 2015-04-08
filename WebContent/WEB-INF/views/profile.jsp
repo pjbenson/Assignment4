@@ -55,6 +55,8 @@ footer {
 </style>
 
 <!-- Bootstrap core CSS -->
+<script type="text/javascript" src="bootstrap/autocomplete.js"></script>
+
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -67,7 +69,6 @@ footer {
 	type="text/javascript"></script>
 
 <script type="text/javascript" src="bootstrap/dist/js/bootstrap.min.js"></script>
-
 </head>
 
 <body>
@@ -142,19 +143,21 @@ footer {
 					<option>Category</option>
 					<option>Manufacturer</option>
 					<option>Title</option>
-					</select>
+				</select>
 			</div>
-			<div class="form-group">
-				<label for="usr">Search:</label> <input type="text"
-					class="form-control" id="usr">
-			</div>
-			
+			<form>
+				<div class="ui-widget">
+					<label for="stock">Title: </label> <input id="stock" />
+				</div>
+			</form>
+
 			<table class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr>
 						<th>Title</th>
 						<th>Manufacturer</th>
 						<th>Category</th>
+						<th>Quantity</th>
 						<th>Price</th>
 						<th>Purchase</th>
 					</tr>
@@ -167,6 +170,7 @@ footer {
 								<td><c:out value="${stock.title}" /></td>
 								<td><c:out value="${stock.manufacturer}" /></td>
 								<td><c:out value="${stock.category.categoryTitle}" /></td>
+								<td><c:out value="${stock.quantity}"/></td>
 								<td><c:out value="€${stock.price}" /></td>
 								<td><a href="#" class="btn btn-info btn-sm">Add to Cart</a></td>
 							</tr>
@@ -176,8 +180,19 @@ footer {
 				</c:forEach>
 			</table>
 		</div>
-
-
+		<div class="jumbotron">
+			<h2>Search For Books</h2>
+			<form:form action="searchBook">
+				<label for="searchObject" class="control-label">Search By...</label>
+				<select name="searchObject" class="form-control">
+					<option value="author">Author</option>
+					<option value="title">Title</option>
+					<option value="category">Category</option>
+				</select>
+				<input type="submit" value="Search"
+					class="btn btn-large btn-success" />
+			</form:form>
+		</div>
 	</div>
 	<!-- /container -->
 

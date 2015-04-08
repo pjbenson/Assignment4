@@ -18,9 +18,12 @@ public class Stock {
 	private String title;
 	private String manufacturer;
 	private Double price;
+	private int quantity;
 	private String filePath;
 	@ManyToOne
 	private Category category;
+	@ManyToOne
+	private Cart cart;
 	
 	public int getId() {
 		return id;
@@ -57,5 +60,11 @@ public class Stock {
 	}
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 }

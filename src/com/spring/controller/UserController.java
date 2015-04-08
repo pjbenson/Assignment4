@@ -71,16 +71,6 @@ public class UserController {
 		return new ModelAndView("profile");
 	}
 	
-	@RequestMapping(value = "/adminProfile", method = RequestMethod.GET)
-	public ModelAndView showAdminProfile(ModelMap model) {
-		List<User> users = userService.userList();
-		List<Stock> stock = stockService.getAllStock();
-		
-		model.addAttribute("users", users);
-		model.addAttribute("stock", stock);
-		return new ModelAndView("adminProfile");
-	}
-	
 	@RequestMapping(value="/users", method = RequestMethod.GET)
 	public ModelAndView listUsers() {
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -109,10 +99,6 @@ public class UserController {
 	
 	@RequestMapping(value = "/addCard", method = RequestMethod.POST)
 	public ModelAndView addAccount(@ModelAttribute("creditCard")CreditCard cc, Map model){
-		System.out.println(cc.getCardNumber());
-		System.out.println(cc.getCardType());
-		System.out.println(cc.getExpiryMonth());
-		System.out.println(cc.getExpiryYear());
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
 		Account acc = accService.getAccount(user.getAccount().getId());
 		acc.addToCreditCardList(cc);
@@ -144,14 +130,6 @@ public class UserController {
 		
 	}
 	
-//	@RequestMapping(value = "/updateBalance", method = RequestMethod.POST)
-//	public ModelAndView updateBalance(@ModelAttribute("account") Account acc, BindingResult result) {
-//		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
-//		User userToUpdate = userService.getUser(user.getId());
-//		userService.updateBalance(userToUpdate);
-//		return new ModelAndView("redirect:/index.html");
-//	}
-	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public ModelAndView addUser(@ModelAttribute("command")  UserBean userBean, BindingResult result) {
 		Map<String, Object> model = new HashMap<String, Object>();
@@ -162,24 +140,6 @@ public class UserController {
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView welcome() {
 		return new ModelAndView("index");
-	}
-	
-	@RequestMapping("/delete/{id}")
-	public ModelAndView deleteUser(@PathVariable("id") Integer id) {
-		userService.deleteUser(id);
-		return new ModelAndView("redirect:/adminProfile.html");
-	}
-	
-	@RequestMapping(value="/edit", method=RequestMethod.GET)
-	public ModelAndView editPage(ModelMap model) {
-		User user = new User();
-		model.addAttribute("user",user);
-		return new ModelAndView("adminProfile");
-	}
-	
-	@RequestMapping(value="/edit", method = RequestMethod.POST)
-	public ModelAndView editUser(@ModelAttribute User user){
-		return null;
 	}
 	
 	private User prepareModel(UserBean userBean){

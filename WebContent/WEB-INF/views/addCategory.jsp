@@ -70,69 +70,8 @@ footer {
 </head>
 
 <body>
-	<div class="container">
 
-		<!-- Static navbar -->
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed"
-						data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-						aria-controls="navbar">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="index.html">Assignment 4</a>
-				</div>
-				<div id="navbar" class="navbar-collapse collapse">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="">${sessionScope.user.userName}</a></li>
-						<li><a href="${pageContext.request.contextPath}/addCategory.html">Add Category</a></li>
-						<li><a href="${pageContext.request.contextPath}/addStock.html">Add Stock</a></li>
-						<li><a href="${pageContext.request.contextPath}/logout.html">Logout</a></li>
-					</ul>
-				</div>
-				<!--/.nav-collapse -->
-			</div>
-			<!--/.container-fluid -->
-		</nav>
-
-		<!-- Main component for a primary marketing message or call to action -->
-
-		<div class="jumbotron">
-			<h2>Users</h2>
-			<table class="table table-bordered table-hover table-striped">
-				<thead>
-					<tr>
-						<th>User ID</th>
-						<th>Username</th>
-						<th>Billing Address</th>
-						<th>Edit</th>
-						<th>Delete</th>
-					</tr>
-				</thead>
-				<c:forEach items="${users}" var="user">
-					<tbody>
-						<c:if test="${sessionScope != null}">
-
-							<tr>
-								<td><c:out value="${user.id}" /></td>
-								<td><c:out value="${user.userName}" /></td>
-								<td><c:out value="${user.account.address}" /></td>
-								<td><a href="#" class="btn btn-sm btn-success"
-									data-toggle="modal" data-target="#myModal">Edit</a></td>
-								<td><a href="<c:url value="/delete/${user.id}.html" />"
-									class="btn btn-info btn-sm">Delete</a></td>
-							</tr>
-
-						</c:if>
-					</tbody>
-				</c:forEach>
-			</table>
-		</div>
-		
-		<div id="myModal" class="modal fade">
+	<div id="myModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -152,37 +91,47 @@ footer {
 		</div>
 	</div>
 
+
+	<div class="container">
+
+		<!-- Static navbar -->
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+						aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="index.html">Assignment 4</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="${pageContext.request.contextPath}/adminProfile.html">${sessionScope.user.userName}</a></li>
+						<li><a href="${pageContext.request.contextPath}/addStock.html">Add Stock</a></li>
+						<li><a href="${pageContext.request.contextPath}/logout.html">Logout</a></li>
+					</ul>
+				</div>
+				<!--/.nav-collapse -->
+			</div>
+			<!--/.container-fluid -->
+		</nav>
+
+		<!-- Main component for a primary marketing message or call to action -->
+
 		<div class="jumbotron">
-			<h2>Stock</h2>
-			<table class="table table-bordered table-hover table-striped">
-				<thead>
-					<tr>
-						<th>Title</th>
-						<th>Manufacturer</th>
-						<th>Category</th>
-						<th>Price</th>
-					</tr>
-				</thead>
-				<c:forEach items="${stock}" var="stock">
-					<tbody>
-						<c:if test="${sessionScope != null}">
-
-							<tr>
-								<td><c:out value="${stock.title}" /></td>
-								<td><c:out value="${stock.manufacturer}" /></td>
-								<td><c:out value="${stock.category.categoryTitle}" /></td>
-								<td><c:out value="€${stock.price}" /></td>
-							</tr>
-
-						</c:if>
-					</tbody>
-				</c:forEach>
-			</table>
+			<h2>Add Category</h2>
+			<form:form method="POST" action="/Assignment4/addCategory.html" commandName="category" class="form-signin">
+				<form:input path="categoryTitle" class="form-control"
+					placeholder="Title" />
+				<div class="form-group">
+					<input type="submit" value="Submit"
+						class="btn btn-large btn-success" />
+				</div>
+			</form:form>
 		</div>
-
-		<div class="jumbotron"></div>
-
-
 	</div>
 	<!-- /container -->
 

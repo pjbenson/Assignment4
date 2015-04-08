@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.dao.StockDAO;
+import com.spring.model.Category;
 import com.spring.model.Stock;
 
 @Service
@@ -20,6 +21,22 @@ public class StockServiceImpl implements StockService {
 	@Override
 	public List<Stock> getAllStock() {
 		return stockDAO.getAllStock();
+	}
+
+	@Override
+	public List<Category> getCategories() {
+		return stockDAO.getCategories();
+	}
+
+	@Override
+	public void saveStock(Stock stock) {
+		stockDAO.saveStock(stock);
+		
+	}
+
+	@Override
+	public void saveCategory(Category cat) {
+		stockDAO.saveCategory(cat);
 	}
 
 }
