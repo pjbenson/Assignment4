@@ -39,4 +39,9 @@ public class StockServiceImpl implements StockService {
 		stockDAO.saveCategory(cat);
 	}
 
+	@Override
+	public Stock getStockById(int id) {
+		return stockDAO.getStockById(id);
+	}
+
 }

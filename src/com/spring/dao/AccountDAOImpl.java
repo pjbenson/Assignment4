@@ -15,6 +15,7 @@ public class AccountDAOImpl implements AccountDAO {
 	private SessionFactory sessionFactory;
 
 	@Override
+	@Transactional
 	public Account getAccount(int id) {
 		return (Account) sessionFactory.getCurrentSession().get(Account.class, id);
 	}
@@ -26,11 +27,13 @@ public class AccountDAOImpl implements AccountDAO {
 	}
 
 	@Override
+	@Transactional
 	public void addCreditCard(CreditCard cc) {
 		sessionFactory.getCurrentSession().saveOrUpdate(cc);
 	}
 
 	@Override
+	@Transactional
 	public void updateAccount(Account acc) {
 		sessionFactory.getCurrentSession().update(acc);
 		

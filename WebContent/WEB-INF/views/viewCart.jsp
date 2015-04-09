@@ -90,7 +90,7 @@ footer {
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="">${sessionScope.user.userName}</a></li>
+						<li><a href="profile.html">${sessionScope.user.userName}</a></li>
 						<li><a href="addAccount.html">Add Account</a></li>
 						<li><a href="viewCart.html">Cart Items:${cartSize} </a></li>
 						<li><a href="${pageContext.request.contextPath}/logout.html">Logout</a></li>
@@ -103,93 +103,39 @@ footer {
 
 		<!-- Main component for a primary marketing message or call to action -->
 
-		<div class="container">
-			<div class="row">
-				<div class="col-md-8 col-xs-10">
-					<div class="well panel panel-default">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-xs-12 col-sm-4 text-center"></div>
-								<!--/col-->
-								<div class="col-xs-12 col-sm-8">
-									<h2>Profile</h2>
-									<p>
-										<strong>Username: ${sessionScope.user.userName}</strong>
-									</p>
-									<p>
-										<strong>Address: ${sessionScope.user.account.address}</strong>
-									</p>
-								</div>
-								<!--/col-->
-							</div>
-							<!--/row-->
-						</div>
-						<!--/panel-body-->
-					</div>
-					<!--/panel-->
-				</div>
-				<!--/col-->
-			</div>
-			<!--/row-->
-		</div>
-
-
 		<div class="jumbotron">
-			<div class="form-group">
-				<label for="sel1">Select list:</label> <select class="form-control"
-					id="sel1">
-					<option>Category</option>
-					<option>Manufacturer</option>
-					<option>Title</option>
-				</select>
-			</div>
-			<form>
-				<div class="ui-widget">
-					<label for="stock">Title: </label> <input id="stock" />
-				</div>
-			</form>
-
 			<table class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr>
 						<th>Title</th>
 						<th>Manufacturer</th>
 						<th>Category</th>
-						<th>Quantity</th>
 						<th>Price</th>
-						<th>Add To Cart</th>
+						<th>Remove</th>
 					</tr>
 				</thead>
-				<c:forEach items="${stock}" var="stock">
+				<c:forEach items="${cartContents}" var="lineItem">
 					<tbody>
 						<c:if test="${sessionScope != null}">
 
 							<tr>
-								<td><c:out value="${stock.title}" /></td>
-								<td><c:out value="${stock.manufacturer}" /></td>
-								<td><c:out value="${stock.category.categoryTitle}" /></td>
-								<td><c:out value="${stock.quantity}"/></td>
-								<td><c:out value="€${stock.price}" /></td>
-								<td><a href="<c:url value="/addToCart/${stock.id}.html" />" class="btn btn-info btn-sm">Add to Cart</a></td>
+								<td><c:out value="${lineItem.stock.title}" /></td>
+								<td><c:out value="${lineItem.stock.manufacturer}" /></td>
+								<td><c:out value="${lineItem.stock.category.categoryTitle}" /></td>
+								<td><c:out value="€${lineItem.stock.price}" /></td>
+								<td><a
+									href="<c:url value="/removeStock/${lineItem.id}.html"/>"
+									class="btn btn-info btn-sm">Remove</a></td>
 							</tr>
 
 						</c:if>
 					</tbody>
 				</c:forEach>
+				<tr>
+					<td>Total: ${cartTotal }</td>
+				</tr>
 			</table>
-		</div>
-		<div class="jumbotron">
-			<h2>Search For Books</h2>
-			<form:form action="searchBook">
-				<label for="searchObject" class="control-label">Search By...</label>
-				<select name="searchObject" class="form-control">
-					<option value="author">Author</option>
-					<option value="title">Title</option>
-					<option value="category">Category</option>
-				</select>
-				<input type="submit" value="Search"
-					class="btn btn-large btn-success" />
-			</form:form>
+			<a href="confirmOrder.html" class="btn btn-large btn-success">Buy</a>
 		</div>
 	</div>
 	<!-- /container -->

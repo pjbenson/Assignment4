@@ -13,6 +13,8 @@ public interface StockDAO {
 	
 	public List<Stock> getAllStock();
 	
+	public Stock getStockById(int id);
+	
 	public List<Category> getCategories();
 
 }

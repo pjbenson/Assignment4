@@ -14,5 +14,7 @@ public interface StockService {
 	public void saveStock(Stock stock);
 
 	public void saveCategory(Category cat);
+	
+	public Stock getStockById(int id);
 
 }

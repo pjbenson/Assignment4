@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.bean.AccountBean;
 import com.spring.bean.UserBean;
 import com.spring.model.Account;
+import com.spring.model.Cart;
 import com.spring.model.Role;
 import com.spring.model.Stock;
 import com.spring.model.User;
@@ -35,6 +37,7 @@ import com.spring.service.UserService;
 import com.spring.template.CreditCard;
 
 @Controller
+@SessionAttributes({"user", "cart", "cartContents"})
 public class UserController {
 
 	@Autowired
@@ -119,7 +122,7 @@ public class UserController {
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
 		User u = userService.getUser(user.getId());
 		u.getAccount().setAddress(acc.getAddress());
-		userService.updateBalance(u);
+		userService.updateUser(u);
 		model.put("user", u);
 		return new ModelAndView("redirect:/addCard.html");
 	}

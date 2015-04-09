@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.model.Category;
 import com.spring.model.Stock;
+import com.spring.model.User;
 
 @Repository
-@Transactional
 public class StockDAOImpl implements StockDAO {
 	
 	@Resource(name="sessionFactory")
@@ -29,24 +29,34 @@ public class StockDAOImpl implements StockDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional
 	public List<Stock> getAllStock() {
 		return sessionFactory.getCurrentSession().createCriteria(Stock.class).list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional
 	public List<Category> getCategories() {
 		return sessionFactory.getCurrentSession().createCriteria(Category.class).list();
 	}
 
 	@Override
+	@Transactional
 	public void saveStock(Stock stock) {
 		sessionFactory.getCurrentSession().saveOrUpdate(stock);
 	}
 
 	@Override
+	@Transactional
 	public void saveCategory(Category cat) {
 		sessionFactory.getCurrentSession().saveOrUpdate(cat);
+	}
+
+	@Override
+	@Transactional
+	public Stock getStockById(int id) {
+		return (Stock) sessionFactory.getCurrentSession().get(Stock.class, id);
 	}
 
 }

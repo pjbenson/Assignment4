@@ -1,7 +1,9 @@
 package com.spring.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,10 +15,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.IndexColumn;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -43,13 +48,13 @@ public class User implements Serializable{
 	@Column(name="password", nullable = false)
 	private String password;
 	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinTable(name="user_role",
-		joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")},
-		inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")}
-	)
+	@JoinTable(name="user_role", joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")})
 	private Role role;
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name="user_id")
+	@IndexColumn(name="INDEX_COL")
+	private List<Order> orders;
 	
-
 	public Role getRole() {
 		return role;
 	}
@@ -73,6 +78,20 @@ public class User implements Serializable{
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public List<Order> getOrders() {
+		return orders;
+	}
+	public void setOrders(List<Order> orders){
+		this.orders = orders;
+	}
+	public void addToOrders(Order order) {
+		if(orders == null){
+			orders = new ArrayList<Order>();
+			orders.add(order);
+		}else{
+			this.orders.add(order);
+		}
 	}
 
 }

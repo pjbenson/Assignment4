@@ -108,7 +108,6 @@ footer {
 						<th>User ID</th>
 						<th>Username</th>
 						<th>Billing Address</th>
-						<th>Edit</th>
 						<th>Delete</th>
 					</tr>
 				</thead>
@@ -120,8 +119,6 @@ footer {
 								<td><c:out value="${user.id}" /></td>
 								<td><c:out value="${user.userName}" /></td>
 								<td><c:out value="${user.account.address}" /></td>
-								<td><a href="#" class="btn btn-sm btn-success"
-									data-toggle="modal" data-target="#myModal">Edit</a></td>
 								<td><a href="<c:url value="/delete/${user.id}.html" />"
 									class="btn btn-info btn-sm">Delete</a></td>
 							</tr>
@@ -132,26 +129,6 @@ footer {
 			</table>
 		</div>
 		
-		<div id="myModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Edit</h4>
-				</div>
-				<div class="modal-body">
-					<div class="col-xs-5"></div>
-				</div>
-				<div class="form-group"></div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
 		<div class="jumbotron">
 			<h2>Stock</h2>
 			<table class="table table-bordered table-hover table-striped">
