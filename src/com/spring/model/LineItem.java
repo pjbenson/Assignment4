@@ -15,10 +15,6 @@ public class LineItem {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
-	@ManyToOne(cascade = {CascadeType.ALL})
-	private Cart cart;
-	@ManyToOne
-	private Order order;
 	@ManyToOne
 	private Stock stock;
 	private double lineTotal;
@@ -29,18 +25,6 @@ public class LineItem {
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
-	public Cart getCart() {
-		return cart;
-	}
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
-	public Order getOrder() {
-		return order;
-	}
-	public void setOrder(Order order) {
-		this.order = order;
 	}
 	public Stock getStock() {
 		return stock;

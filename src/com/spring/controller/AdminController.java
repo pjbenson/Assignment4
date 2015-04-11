@@ -1,5 +1,6 @@
 package com.spring.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.model.AddStockForm;
 import com.spring.model.Category;
+import com.spring.model.SearchStockForm;
 import com.spring.model.Stock;
 import com.spring.model.User;
 import com.spring.service.AccountService;
@@ -23,6 +26,7 @@ import com.spring.service.StockService;
 import com.spring.service.UserService;
 
 @Controller
+@SessionAttributes("adminSortedStock")
 public class AdminController {
 	
 	@Autowired
@@ -43,6 +47,7 @@ public class AdminController {
 		
 		model.addAttribute("users", users);
 		model.addAttribute("stock", stock);
+		model.addAttribute("adminSearchObject", new SearchStockForm());
 		return new ModelAndView("adminProfile");
 	}
 	
@@ -75,7 +80,7 @@ public class AdminController {
 			}
 		}
 		stockService.saveStock(s);
-		return new ModelAndView("addStock");
+		return new ModelAndView("redirect:/addStock.html");
 	}
 	
 	@RequestMapping(value = "/addCategory", method = RequestMethod.GET)
@@ -107,6 +112,36 @@ public class AdminController {
 	@RequestMapping(value="/edit", method = RequestMethod.POST)
 	public ModelAndView editUser(@ModelAttribute User user){
 		return null;
+	}
+	
+	@RequestMapping(value="/adminSearchObject", method = RequestMethod.POST)
+	public ModelAndView searchStock(@ModelAttribute("searchObject") SearchStockForm ssf, ModelMap model) throws IOException{
+		List<Stock> stock = getStock(ssf.getSearchBy(), ssf.getSearchString());
+		model.put("adminSortedStock", stock);
+		return new ModelAndView("redirect:/adminProfile.html");
+	}
+	
+	private List<Stock> getStock(String searchType, String searchString){
+		List<Stock> stock = new ArrayList<Stock>();
+
+		for(Stock s: stockService.getAllStock()){
+			if(searchType.equals("manufacturer")){
+				if(s.getManufacturer().equalsIgnoreCase(searchString)){
+					stock.add(s);
+				}
+			}
+			if(searchType.equals("title")){
+				if(s.getTitle().equalsIgnoreCase(searchString)){
+					stock.add(s);
+				}
+			}
+			if(searchType.equals("category")){
+				if(s.getCategory().getCategoryTitle().equalsIgnoreCase(searchString)){
+					stock.add(s);
+				}
+			}
+		}
+		return stock;
 	}
 
 }

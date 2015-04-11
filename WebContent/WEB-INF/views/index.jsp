@@ -50,38 +50,20 @@
 						<li class="active"><a href="#">Home</a></li>
 						<li><a href="loginform.html">Login</a></li>
 						<li><a href="register.html">Register</a></li>
-						<li></li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button" aria-expanded="false">Dropdown
-								<span class="caret"></span>
-						</a>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
-								<li class="divider"></li>
-								<li class="dropdown-header">Nav header</li>
-								<li><a href="#">Separated link</a></li>
-								<li><a href="#">One more separated link</a></li>
-							</ul></li>
 					</ul>
 					<c:if test="${not empty sessionScope.user.userName}">
-							<ul class="nav navbar-nav navbar-right">
-								<li class="dropdown"><a class="dropdown-toggle"
-									role="button" data-toggle="dropdown"><i
-										class="glyphicon glyphicon-user"></i>
-										${sessionScope.user.userName} <span class="caret"></span></a>
-									<ul class="dropdown-menu" role="menu">
-										<li><a href="profile.html">My Profile</a></li>
-										<li><a href="updateBalance.html">Add Cash</a></li>
-									</ul></li>
-								<li><a href="#">Wallet: <i
-										class="glyphicon glyphicon-euro"></i></a></li>
-								<li><a
-									href="${pageContext.request.contextPath}/logout.html"><i
-										class="glyphicon glyphicon-lock"></i>Logout</a></li>
-							</ul>
-						</c:if>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown"><a class="dropdown-toggle"
+								role="button" data-toggle="dropdown"><i
+									class="glyphicon glyphicon-user"></i>
+									${sessionScope.user.userName} <span class="caret"></span></a>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="profile.html">My Profile</a></li>
+								</ul></li>
+							<li><a href="${pageContext.request.contextPath}/logout.html"><i
+									class="glyphicon glyphicon-lock"></i>Logout</a></li>
+						</ul>
+					</c:if>
 				</div>
 				<!--/.nav-collapse -->
 			</div>
@@ -90,14 +72,29 @@
 
 		<!-- Main component for a primary marketing message or call to action -->
 		<div class="jumbotron">
-			<h1>Navbar example</h1>
-			<p>This example is a quick exercise to illustrate how the
-				default, static navbar and fixed to top navbar work. It includes the
-				responsive CSS and HTML, so it also adapts to your viewport and
-				device.</p>
+			<h1>Assignment4</h1>
+			<h2>Login credentials:</h2>
+			<table class="table table-bordered ">
+				<thead>
+					<tr>
+						<th>Username</th>
+						<th>Password</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>admin</td>
+						<td>admin</td>
+					</tr>
+					<tr>
+						<td>user</td>
+						<td>user</td>
+					</tr>
+				</tbody>
+			</table>
 			<p>
-				<a class="btn btn-lg btn-primary" href="../../components/#navbar"
-					role="button">View navbar docs &raquo;</a>
+				<a class="btn btn-lg btn-primary" href="loginform.html"
+					role="button">Login &raquo;</a>
 			</p>
 		</div>
 

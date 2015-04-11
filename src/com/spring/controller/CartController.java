@@ -2,7 +2,9 @@ package com.spring.controller;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,7 +20,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.model.Cart;
 import com.spring.model.LineItem;
 import com.spring.model.Order;
 import com.spring.model.Stock;
@@ -37,38 +38,32 @@ public class CartController {
 	private UserService userService;
 	@Autowired
 	private LineItemService lineItemService;
-	private List<LineItem> lineItems;
-	private Cart cart;
+	private List<LineItem> cart;
 
 	@RequestMapping("/addToCart/{id}")
 	public ModelAndView addToCart(@PathVariable("id") Integer id, ModelMap model){
-		Cart sessionCart = (Cart) RequestContextHolder.currentRequestAttributes().getAttribute("cart", RequestAttributes.SCOPE_SESSION);
-		if(sessionCart != null){
+		if(RequestContextHolder.currentRequestAttributes().getAttribute("cart", RequestAttributes.SCOPE_SESSION) != null){
 			Stock stock = stockService.getStockById(id);
 			LineItem lineItem = new LineItem();
-			lineItem.setCart(cart);
 			lineItem.setStock(stock);
 			lineItem.setLineTotal(stock.getPrice());
-			cart.addLineitem(lineItem);
 			lineItemService.saveLineItem(lineItem);
-			lineItems.add(lineItem);
+			cart.add(lineItem);
+			model.put("cart", cart);
 		}
 		else{
-			cart = new Cart();
 			Stock stock = stockService.getStockById(id);
 			LineItem lineItem = new LineItem();
-			lineItem.setCart(cart);
 			lineItem.setStock(stock);
 			lineItem.setLineTotal(stock.getPrice());
-			cart.addLineitem(lineItem);
 			lineItemService.saveLineItem(lineItem);
-			lineItems = new ArrayList<LineItem>();
-			lineItems.add(lineItem);
+			cart = new ArrayList<LineItem>();
+			cart.add(lineItem);
+			model.put("cart", cart);
 		}
-		userService.updateCart(cart);
-		model.put("cart", cart);
-		model.put("cartSize", cart.getLineitems().size());
-		model.put("cartContents", cart.getLineitems());
+
+		model.put("cartSize", cart.size());
+		model.put("cartContents", cart);
 		model.put("cartTotal", getCartTotal());
 		return new ModelAndView("redirect:/profile.html");
 	}
@@ -80,29 +75,66 @@ public class CartController {
 
 	@RequestMapping(value = "/confirmOrder", method = RequestMethod.GET)
 	public ModelAndView buyStock(ModelMap model){
-		Cart cart = (Cart) RequestContextHolder.currentRequestAttributes().getAttribute("cart", RequestAttributes.SCOPE_SESSION);
+		List<LineItem> sessionCart = (List<LineItem>) RequestContextHolder.currentRequestAttributes().getAttribute("cart", RequestAttributes.SCOPE_SESSION);
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
-		
-		return new ModelAndView("redirect:/viewCart.html");
+		User tempUser = userService.getUser(user.getId());
+
+		Order order = new Order();
+		List<Stock> stock = new ArrayList<Stock>();
+		for(LineItem li: sessionCart){
+			stock.add(li.getStock());
+		}
+		order.setStock(stock);
+		tempUser.addToOrders(order);
+		userService.updateUser(user);
+
+		updateStockLevels(sessionCart);
+		chargeUserCreditCard(PaymentStrategy, getCartTotal());
+		sessionCart.clear();
+		cart.clear();
+
+		model.put("orders", order);
+		model.put("cartSize", cart.size());
+		model.put("cartTotal", getCartTotal());
+		return new ModelAndView("redirect:/orders.html");
 	}
 
 	@RequestMapping("/removeStock/{id}")
 	public ModelAndView removeStock(@PathVariable("id") Integer id, ModelMap model){
-		lineItemService.deleteLineItem(id);
-		cart.getLineitems().clear();
+		cart.clear();
 		//TODO remove individual lineitem for list
-		model.put("cartSize", cart.getLineitems().size());
+		model.put("cart", cart);
+		model.put("cartSize", cart.size());
+		model.put("cartTotal", getCartTotal());
 		return new ModelAndView("redirect:/viewCart.html");
 	}
-	
+
+	@RequestMapping(value = "/orders", method = RequestMethod.GET)
+	public ModelAndView showOrders(ModelMap model){
+		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
+		//model.addAttribute("creditCard", user.getAccount().getCreditCards().get(0).getCardType());
+
+		return new ModelAndView("orders");
+	}
+
 	private Double getCartTotal(){
 		Double total = 0.;
-		for(LineItem li: cart.getLineitems()){
+		for(LineItem li: cart){
 			total += li.getStock().getPrice();
 		}
 		return total;
 	}
-	
-	
 
+	private void updateStockLevels(List<LineItem> lineItems){
+		for(LineItem li: lineItems){
+			Stock stock = stockService.getStockById(li.getStock().getId());
+			int newQuantity = stock.getQuantity()-1;
+			stock.setQuantity(newQuantity);
+			stockService.updateStock(stock);
+		}
+	}
+
+	private void chargeUserCreditCard(User user, Double cartTotal){
+		user.getAccount().getCreditCards().get(0).pay(cartTotal);
+	}
 }

@@ -21,6 +21,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.IndexColumn;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -39,20 +41,14 @@ public class User implements Serializable{
 	private String userName;
 	@OneToOne(mappedBy="user", cascade=CascadeType.ALL)
 	private Account account;
-	public Account getAccount() {
-		return account;
-	}
-	public void setAccount(Account account) {
-		this.account = account;
-	}
 	@Column(name="password", nullable = false)
 	private String password;
 	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinTable(name="user_role", joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")})
 	private Role role;
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name="user_id")
-	@IndexColumn(name="INDEX_COL")
+	@Fetch(value = FetchMode.SUBSELECT)
+	@JoinTable(name = "user_orders", joinColumns = @JoinColumn(name = "user_id", referencedColumnName="id"), inverseJoinColumns = @JoinColumn(name = "order_id",referencedColumnName="id"))
 	private List<Order> orders;
 	
 	public Role getRole() {
@@ -60,6 +56,12 @@ public class User implements Serializable{
 	}
 	public void setRole(Role role) {
 		this.role = role;
+	}
+	public Account getAccount() {
+		return account;
+	}
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 	public int getId() {
 		return id;

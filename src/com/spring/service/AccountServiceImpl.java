@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.dao.AccountDAO;
 import com.spring.model.Account;
-import com.spring.template.CreditCard;
+import com.spring.strategy.CreditCard;
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)

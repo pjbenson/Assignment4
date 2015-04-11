@@ -44,4 +44,9 @@ public class StockServiceImpl implements StockService {
 		return stockDAO.getStockById(id);
 	}
 
+	@Override
+	public void updateStock(Stock stock) {
+		stockDAO.updateStock(stock);
+	}
+
 }

@@ -2,42 +2,37 @@ package com.spring.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.bean.AccountBean;
 import com.spring.bean.UserBean;
 import com.spring.model.Account;
-import com.spring.model.Cart;
 import com.spring.model.Role;
+import com.spring.model.SearchStockForm;
 import com.spring.model.Stock;
 import com.spring.model.User;
 import com.spring.service.AccountService;
 import com.spring.service.LoginService;
+import com.spring.service.OrderService;
 import com.spring.service.RoleService;
 import com.spring.service.StockService;
 import com.spring.service.UserService;
-import com.spring.template.CreditCard;
+import com.spring.strategy.CreditCard;
 
 @Controller
-@SessionAttributes({"user", "cart", "cartContents"})
+@SessionAttributes({"user", "cart", "cartContents", "account"})
 public class UserController {
 
 	@Autowired
@@ -50,15 +45,21 @@ public class UserController {
 	private StockService stockService;
 	@Autowired
 	private AccountService accService;
+	@Autowired
+	private OrderService orderService;
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ModelAndView saveUser(@ModelAttribute("command") UserBean userBean, BindingResult result) {
+	public ModelAndView saveUser(@ModelAttribute("command") UserBean userBean, BindingResult result, ModelMap model) {
 		User user = prepareModel(userBean);
 		User checkIfUserExists = loginService.checkLogin(user.getUserName(), user.getPassword());
-		Role role_user = roleService.getRole(2);
+		Role role_user = roleService.getRole(6);
 		if(checkIfUserExists == null){
+			Account acc = new Account();
+			acc.setAddress("");
 			user.setRole(role_user);
+			user.setAccount(acc);
 			userService.addUser(user);
+			model.addAttribute("account", acc);
 			return new ModelAndView("redirect:/loginform.html");
 		}
 		else{
@@ -68,9 +69,13 @@ public class UserController {
 	
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public ModelAndView showProfile(ModelMap model) {
+		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
 		List<Stock> stock = stockService.getAllStock();
 		
 		model.addAttribute("stock", stock);
+		model.addAttribute("ascOrDesc", new SearchStockForm());
+		model.addAttribute("searchObject", new SearchStockForm());
+		//model.addAttribute("creditCard", user.getAccount().getCreditCards().get(0).getCardType());
 		return new ModelAndView("profile");
 	}
 	
@@ -101,12 +106,13 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/addCard", method = RequestMethod.POST)
-	public ModelAndView addAccount(@ModelAttribute("creditCard")CreditCard cc, Map model){
+	public ModelAndView addAccount(@ModelAttribute("creditCard")CreditCard cc, ModelMap model){
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
 		Account acc = accService.getAccount(user.getAccount().getId());
-		acc.addToCreditCardList(cc);
+		cc.setAccount(acc);
 		accService.addCreditCard(cc);
 		accService.updateAccount(acc);
+		model.addAttribute("account", acc);
 		return new ModelAndView("redirect:/profile.html");
 	}
 	
@@ -118,12 +124,16 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/addAccount", method = RequestMethod.POST)
-	public ModelAndView addAccount(@ModelAttribute("account")Account acc, Map model){
+	public ModelAndView addAccount(@ModelAttribute("account")Account acc, ModelMap model){
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
-		User u = userService.getUser(user.getId());
-		u.getAccount().setAddress(acc.getAddress());
-		userService.updateUser(u);
-		model.put("user", u);
+//		if(user.getAccount()==null){
+//			user.setAccount(new Account());
+//		}
+		user.getAccount().setAddress(acc.getAddress());
+		userService.updateUser(user);
+		
+		model.addAttribute("account", acc);
+		model.put("user", user);
 		return new ModelAndView("redirect:/addCard.html");
 	}
 	

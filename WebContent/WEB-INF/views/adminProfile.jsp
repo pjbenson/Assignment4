@@ -13,7 +13,7 @@
 <meta name="author" content="">
 <link rel="icon" href="../../favicon.ico">
 
-<title>Profile</title>
+<title>Admin Profile</title>
 
 <!-- Latest compiled and minified CSS -->
 <style type="text/css">
@@ -88,8 +88,12 @@ footer {
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="">${sessionScope.user.userName}</a></li>
-						<li><a href="${pageContext.request.contextPath}/addCategory.html">Add Category</a></li>
-						<li><a href="${pageContext.request.contextPath}/addStock.html">Add Stock</a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/addCategory.html">Add
+								Category</a></li>
+						<li><a
+							href="${pageContext.request.contextPath}/addStock.html">Add
+								Stock</a></li>
 						<li><a href="${pageContext.request.contextPath}/logout.html">Logout</a></li>
 					</ul>
 				</div>
@@ -128,9 +132,9 @@ footer {
 				</c:forEach>
 			</table>
 		</div>
-		
+
 		<div class="jumbotron">
-			<h2>Stock</h2>
+			<h2>All Stock</h2>
 			<table class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr>
@@ -138,6 +142,7 @@ footer {
 						<th>Manufacturer</th>
 						<th>Category</th>
 						<th>Price</th>
+						<th>Quantity</th>
 					</tr>
 				</thead>
 				<c:forEach items="${stock}" var="stock">
@@ -149,6 +154,7 @@ footer {
 								<td><c:out value="${stock.manufacturer}" /></td>
 								<td><c:out value="${stock.category.categoryTitle}" /></td>
 								<td><c:out value="€${stock.price}" /></td>
+								<td><c:out value="${stock.quantity}" /></td>
 							</tr>
 
 						</c:if>
@@ -157,7 +163,49 @@ footer {
 			</table>
 		</div>
 
-		<div class="jumbotron"></div>
+		<div class="jumbotron">
+			<h2>Search for Stock Items</h2>
+			<form:form method="POST" commandName="adminSearchObject"
+				action="/Assignment4/adminSearchObject.html">
+				<label for="adminSearchObject" class="control-label">Search By...</label>
+				<form:select path="searchBy" id="searchBy" class="form-control">
+					<form:option value="manufacturer">Manufacturer</form:option>
+					<form:option value="title">Title</form:option>
+					<form:option value="category">Category</form:option>
+				</form:select>
+				<form:input path="searchString" id="searchString"
+					class="form-control" placeholder="Search" />
+				<input type="submit" value="Search"
+					class="btn btn-large btn-success" />
+			</form:form>
+			<hr>
+			<table class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Manufacturer</th>
+						<th>Category</th>
+						<th>Quantity</th>
+						<th>Price</th>
+					</tr>
+				</thead>
+				<c:forEach items="${adminSortedStock}" var="stock">
+					<tbody>
+						<c:if test="${sessionScope != null}">
+
+							<tr>
+								<td><c:out value="${stock.title}" /></td>
+								<td><c:out value="${stock.manufacturer}" /></td>
+								<td><c:out value="${stock.category.categoryTitle}" /></td>
+								<td><c:out value="${stock.quantity}" /></td>
+								<td><c:out value="€${stock.price}" /></td>
+							</tr>
+
+						</c:if>
+					</tbody>
+				</c:forEach>
+			</table>
+		</div>
 
 
 	</div>

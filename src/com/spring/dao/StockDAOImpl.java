@@ -59,4 +59,10 @@ public class StockDAOImpl implements StockDAO {
 		return (Stock) sessionFactory.getCurrentSession().get(Stock.class, id);
 	}
 
+	@Override
+	@Transactional
+	public void updateStock(Stock stock) {
+		sessionFactory.getCurrentSession().update(stock);
+	}
+
 }

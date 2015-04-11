@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name="stock")
@@ -26,8 +30,8 @@ public class Stock {
 	private String filePath;
 	@ManyToOne
 	private Category category;
-	@OneToMany
-	@JoinColumn(name="stock_id")
+	@OneToMany(mappedBy="stock", fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<LineItem> lineitems;
 	
 	public int getId() {
@@ -71,5 +75,11 @@ public class Stock {
 	}
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+	public List<LineItem> getLineitems() {
+		return lineitems;
+	}
+	public void setLineitems(List<LineItem> lineitems) {
+		this.lineitems = lineitems;
 	}
 }

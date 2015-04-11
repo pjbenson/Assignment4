@@ -74,7 +74,7 @@
 
 					<tr>
 						<td>Expiry Month:</td>
-						<td><form:password path="expiryMonth" /></td>
+						<td><form:input path="expiryMonth" /></td>
 					</tr>
 					<tr>
 						<td>Expiry Year:</td>

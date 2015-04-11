@@ -1,7 +1,7 @@
 package com.spring.service;
 
 import com.spring.model.Account;
-import com.spring.template.CreditCard;
+import com.spring.strategy.CreditCard;
 
 public interface AccountService {
 	

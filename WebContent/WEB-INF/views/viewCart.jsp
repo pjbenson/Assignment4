@@ -13,7 +13,7 @@
 <meta name="author" content="">
 <link rel="icon" href="../../favicon.ico">
 
-<title>Profile</title>
+<title>Cart</title>
 
 <!-- Latest compiled and minified CSS -->
 <style type="text/css">

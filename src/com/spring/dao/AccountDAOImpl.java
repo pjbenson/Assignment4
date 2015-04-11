@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.model.Account;
-import com.spring.template.CreditCard;
+import com.spring.strategy.CreditCard;
 
 @Repository("accountDAO")
 public class AccountDAOImpl implements AccountDAO {

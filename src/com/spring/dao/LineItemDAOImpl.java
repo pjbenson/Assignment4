@@ -42,7 +42,7 @@ public class LineItemDAOImpl implements LineItemDAO {
 
 	@Override
 	public void mergeLineItem(LineItem lineItem) {
-		sessionFactory.getCurrentSession().merge(lineItem);		
+		sessionFactory.getCurrentSession().update(lineItem);		
 	}
 
 }

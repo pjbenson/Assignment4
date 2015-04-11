@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.model.Cart;
 import com.spring.model.User;
 import com.spring.service.LoginService;
 
@@ -45,7 +44,6 @@ public class LoginController {
 		User currentUser = loginService.checkLogin(user.getUserName(), user.getPassword());
 		if(currentUser != null && currentUser.getRole().getRole().equals("ROLE_USER")){
 			model.put("user", currentUser);
-			//model.put("cart", new Cart());
 			return new ModelAndView("redirect:/profile.html");
 		}
 		else if(currentUser != null && currentUser.getRole().getRole().equals("ROLE_ADMIN")){

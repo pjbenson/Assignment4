@@ -42,10 +42,9 @@ http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 				<value>com.spring.model.Account</value>
 				<value>com.spring.model.Category</value>
 				<value>com.spring.model.Stock</value>
-				<value>com.spring.model.Cart</value>
 				<value>com.spring.model.Order</value>
 				<value>com.spring.model.LineItem</value>
-				<value>com.spring.template.CreditCard</value>
+				<value>com.spring.strategy.CreditCard</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

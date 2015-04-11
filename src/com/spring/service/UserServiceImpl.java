@@ -7,16 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 
-
-
-
-
-
-
 import com.spring.dao.UserDao;
-import com.spring.model.Cart;
 import com.spring.model.Order;
-import com.spring.model.Stock;
 import com.spring.model.User;
 
 @Service
@@ -49,12 +41,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUser(User user) {
 		userDao.updateBalance(user);
-	}
-
-	@Override
-	public void updateCart(Cart cart) {
-		userDao.updateCart(cart);
-		
 	}
 
 	@Override

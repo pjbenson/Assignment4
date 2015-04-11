@@ -15,6 +15,8 @@ public interface StockDAO {
 	
 	public Stock getStockById(int id);
 	
+	public void updateStock(Stock stock);
+	
 	public List<Category> getCategories();
 
 }

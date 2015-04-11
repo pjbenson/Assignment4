@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import com.spring.template.CreditCard;
+import com.spring.strategy.CreditCard;
 
 @Entity
 @Table(name = "Account")
@@ -56,6 +56,10 @@ public class Account {
 
 	public List<CreditCard> getCreditCards() {
 		return creditCards;
+	}
+	
+	public void setCreditCards(List<CreditCard> creditCards){
+		this.creditCards = creditCards;
 	}
 
 	public void addToCreditCardList(CreditCard creditCard) {

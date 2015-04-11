@@ -1,23 +1,13 @@
 package com.spring.dao;
 
 import java.util.List;
-
-
-
-
-
-
-
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.model.Cart;
 import com.spring.model.Order;
-import com.spring.model.Stock;
 import com.spring.model.User;
 
 @Repository("userDao")
@@ -56,16 +46,11 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	@Transactional(readOnly = false)
 	public void updateBalance(User user) {
-		sessionFactory.getCurrentSession().save(user);
+		sessionFactory.getCurrentSession().saveOrUpdate(user);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public void updateCart(Cart cart) {
-		sessionFactory.getCurrentSession().save(cart);
-	}
-
-	@Override
 	public void saveOrder(Order order) {
 		sessionFactory.getCurrentSession().save(order);
 		
