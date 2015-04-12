@@ -46,7 +46,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	@Transactional(readOnly = false)
 	public void updateBalance(User user) {
-		sessionFactory.getCurrentSession().saveOrUpdate(user);
+		sessionFactory.getCurrentSession().update(user);
 	}
 
 	@Override

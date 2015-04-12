@@ -114,7 +114,7 @@ footer {
 					<tr>
 						<td>${sessionScope.user.userName}</td>
 						<td>${sessionScope.user.account.address}</td>
-						<td>${sessionScope.account.creditcard.cardType}</td>
+						<td>${creditCard}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -130,15 +130,15 @@ footer {
 						<th>Price</th>
 					</tr>
 				</thead>
-				<c:forEach items="${orders}" var="stock">
+				<c:forEach items="${orders}" var="lineitem">
 					<tbody>
 						<c:if test="${sessionScope != null}">
 
 							<tr>
-								<td><c:out value="${title}" /></td>
-								<td><c:out value="${manufacturer}" /></td>
-								<td><c:out value="${category.categoryTitle}" /></td>
-								<td><c:out value="€${price}" /></td>
+								<td><c:out value="${stock.title}" /></td>
+								<td><c:out value="${stock.manufacturer}" /></td>
+								<td><c:out value="${stock.category.categoryTitle}" /></td>
+								<td><c:out value="€${stock.price}" /></td>
 							</tr>
 
 						</c:if>

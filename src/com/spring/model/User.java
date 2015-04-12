@@ -37,18 +37,15 @@ public class User implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="ID", nullable = false)
 	private int id;
-	@Column(name="userName", nullable = false)
 	private String userName;
+	private String password;
 	@OneToOne(mappedBy="user", cascade=CascadeType.ALL)
 	private Account account;
-	@Column(name="password", nullable = false)
-	private String password;
 	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinTable(name="user_role", joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id")}, inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id")})
 	private Role role;
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user", fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	@JoinTable(name = "user_orders", joinColumns = @JoinColumn(name = "user_id", referencedColumnName="id"), inverseJoinColumns = @JoinColumn(name = "order_id",referencedColumnName="id"))
 	private List<Order> orders;
 	
 	public Role getRole() {

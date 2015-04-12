@@ -25,13 +25,16 @@ import com.spring.model.Order;
 import com.spring.model.Stock;
 import com.spring.model.User;
 import com.spring.service.LineItemService;
+import com.spring.service.OrderService;
 import com.spring.service.StockService;
 import com.spring.service.UserService;
+import com.spring.strategy.PaymentStrategy;
 
 @Controller
-@SessionAttributes({"user", "cart", "cartContents", "cartSize", "cartTotal"})
+@SessionAttributes({"user", "cart", "cartContents", "cartSize", "cartTotal", "creditCard"})
 public class CartController {
-
+	@Autowired
+	private OrderService orderService;
 	@Autowired
 	private StockService stockService;
 	@Autowired
@@ -80,23 +83,32 @@ public class CartController {
 		User tempUser = userService.getUser(user.getId());
 
 		Order order = new Order();
-		List<Stock> stock = new ArrayList<Stock>();
-		for(LineItem li: sessionCart){
-			stock.add(li.getStock());
-		}
-		order.setStock(stock);
-		tempUser.addToOrders(order);
-		userService.updateUser(user);
-
+		order.setUser(tempUser);
+		userService.saveOrder(order);
+		updateLineItems(sessionCart, tempUser);
 		updateStockLevels(sessionCart);
-		chargeUserCreditCard(PaymentStrategy, getCartTotal());
+		chargeUserCreditCard(user.getAccount().getCreditCards().get(0), getCartTotal());
 		sessionCart.clear();
 		cart.clear();
 
-		model.put("orders", order);
 		model.put("cartSize", cart.size());
 		model.put("cartTotal", getCartTotal());
 		return new ModelAndView("redirect:/orders.html");
+	}
+	
+	private void updateLineItems(List<LineItem> lineItems, User user){
+		List<Order> orders = orderService.getAllOrders();
+		List<Order> specificOrders = new ArrayList<Order>();
+		for(Order o: orders){
+			if(o.getUser().getId() == user.getId()){
+				specificOrders.add(o);
+			}
+		}
+		for(LineItem li: lineItems){
+			LineItem lineItem = lineItemService.getItemById(li.getId());
+			lineItem.setOrder(specificOrders.get(specificOrders.size()-1));
+			lineItemService.mergeLineItem(lineItem);
+		}
 	}
 
 	@RequestMapping("/removeStock/{id}")
@@ -112,8 +124,14 @@ public class CartController {
 	@RequestMapping(value = "/orders", method = RequestMethod.GET)
 	public ModelAndView showOrders(ModelMap model){
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
-		//model.addAttribute("creditCard", user.getAccount().getCreditCards().get(0).getCardType());
-
+		System.out.println(user.getOrders().size());
+		for(Order o: user.getOrders()){
+			for(LineItem l: o.getLineitem()){
+				System.out.println(l.getStock().getManufacturer());
+			}
+		}
+		model.put("creditCard", user.getAccount().getCreditCards().get(0).getCardType());
+		model.put("orders", user.getOrders());
 		return new ModelAndView("orders");
 	}
 
@@ -134,7 +152,7 @@ public class CartController {
 		}
 	}
 
-	private void chargeUserCreditCard(User user, Double cartTotal){
-		user.getAccount().getCreditCards().get(0).pay(cartTotal);
+	private void chargeUserCreditCard(PaymentStrategy card, Double cartTotal){
+		card.pay(cartTotal);
 	}
 }

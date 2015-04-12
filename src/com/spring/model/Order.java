@@ -23,30 +23,28 @@ import org.hibernate.annotations.IndexColumn;
 public class Order {
 	@Id
 	private int id;
-	@OneToMany(fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "order", fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	@JoinTable(name = "order_stock", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "stock_id"))
-	private List<Stock> stock;
+	private List<LineItem> lineitem;
+	@ManyToOne(fetch = FetchType.EAGER)
+	private User user;
 	
-	public List<Stock> getStock() {
-		return stock;
+	public User getUser() {
+		return user;
 	}
-	public void setStock(List<Stock> stock) {
-		this.stock = stock;
-	}
-	public void addToStock(Stock stock){
-		if(this.stock==null){
-			this.stock = new ArrayList<Stock>();
-			this.stock.add(stock);
-		}
-		else{
-			this.stock.add(stock);
-		}
+	public void setUser(User user) {
+		this.user = user;
 	}
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public List<LineItem> getLineitem() {
+		return lineitem;
+	}
+	public void setLineitem(List<LineItem> lineitem) {
+		this.lineitem = lineitem;
 	}
 }
