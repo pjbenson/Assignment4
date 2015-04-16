@@ -8,7 +8,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" href="../../favicon.ico">
@@ -130,15 +129,15 @@ footer {
 						<th>Price</th>
 					</tr>
 				</thead>
-				<c:forEach items="${orders}" var="lineitem">
+				<c:forEach items="${order}" var="lineitem">
 					<tbody>
 						<c:if test="${sessionScope != null}">
 
 							<tr>
-								<td><c:out value="${stock.title}" /></td>
-								<td><c:out value="${stock.manufacturer}" /></td>
-								<td><c:out value="${stock.category.categoryTitle}" /></td>
-								<td><c:out value="€${stock.price}" /></td>
+								<td><c:out value="${lineitem.stock.title}" /></td>
+								<td><c:out value="${lineitem.stock.manufacturer}" /></td>
+								<td><c:out value="${lineitem.stock.category.categoryTitle}" /></td>
+								<td><c:out value="€${lineitem.stock.price}" /></td>
 							</tr>
 
 						</c:if>

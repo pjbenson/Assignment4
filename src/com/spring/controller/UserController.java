@@ -80,6 +80,14 @@ public class UserController {
 		return new ModelAndView("profile");
 	}
 	
+	@RequestMapping(value="/userOrders", method = RequestMethod.GET)
+	public ModelAndView showUserOrders(ModelMap model){
+		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
+		model.addAttribute("userForAdmin", user);
+		model.addAttribute("userOrders", user.getOrders());
+		return new ModelAndView("userOrders");
+	}
+	
 	@RequestMapping(value="/users", method = RequestMethod.GET)
 	public ModelAndView listUsers() {
 		Map<String, Object> model = new HashMap<String, Object>();

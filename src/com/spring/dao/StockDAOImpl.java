@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.model.Category;
+import com.spring.model.Review;
 import com.spring.model.Stock;
 import com.spring.model.User;
 
@@ -63,6 +64,13 @@ public class StockDAOImpl implements StockDAO {
 	@Transactional
 	public void updateStock(Stock stock) {
 		sessionFactory.getCurrentSession().update(stock);
+	}
+
+	@Override
+	@Transactional
+	public void saveReview(Review review) {
+		sessionFactory.getCurrentSession().save(review);
+		
 	}
 
 }

@@ -47,6 +47,9 @@ public class User implements Serializable{
 	@OneToMany(mappedBy = "user", fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Order> orders;
+	@OneToMany(mappedBy = "user", fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<Review> reviews;
 	
 	public Role getRole() {
 		return role;
@@ -91,6 +94,12 @@ public class User implements Serializable{
 		}else{
 			this.orders.add(order);
 		}
+	}
+	public List<Review> getReviews() {
+		return reviews;
+	}
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
 	}
 
 }

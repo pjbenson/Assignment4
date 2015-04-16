@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.dao.StockDAO;
 import com.spring.model.Category;
+import com.spring.model.Review;
 import com.spring.model.Stock;
 
 @Service
@@ -47,6 +48,11 @@ public class StockServiceImpl implements StockService {
 	@Override
 	public void updateStock(Stock stock) {
 		stockDAO.updateStock(stock);
+	}
+
+	@Override
+	public void saveReview(Review review) {
+		stockDAO.saveReview(review);
 	}
 
 }

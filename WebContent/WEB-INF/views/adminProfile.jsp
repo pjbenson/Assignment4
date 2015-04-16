@@ -103,7 +103,7 @@ footer {
 		</nav>
 
 		<!-- Main component for a primary marketing message or call to action -->
-
+		
 		<div class="jumbotron">
 			<h2>Users</h2>
 			<table class="table table-bordered table-hover table-striped">
@@ -121,7 +121,7 @@ footer {
 
 							<tr>
 								<td><c:out value="${user.id}" /></td>
-								<td><c:out value="${user.userName}" /></td>
+								<td><a href="<c:url value="/user/${user.id}.html" />">${user.userName}</a></td>
 								<td><c:out value="${user.account.address}" /></td>
 								<td><a href="<c:url value="/delete/${user.id}.html" />"
 									class="btn btn-info btn-sm">Delete</a></td>

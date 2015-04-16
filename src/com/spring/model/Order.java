@@ -25,7 +25,7 @@ public class Order {
 	private int id;
 	@OneToMany(mappedBy = "order", fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	private List<LineItem> lineitem;
+	private List<LineItem> lineitems;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User user;
 	
@@ -41,10 +41,10 @@ public class Order {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public List<LineItem> getLineitem() {
-		return lineitem;
+	public List<LineItem> getLineitems() {
+		return lineitems;
 	}
-	public void setLineitem(List<LineItem> lineitem) {
-		this.lineitem = lineitem;
+	public void setLineitems(List<LineItem> lineitems) {
+		this.lineitems = lineitems;
 	}
 }

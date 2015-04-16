@@ -8,12 +8,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" href="../../favicon.ico">
 
-<title>Profile</title>
+<title>Orders</title>
 
 <!-- Latest compiled and minified CSS -->
 <style type="text/css">
@@ -54,43 +53,17 @@ footer {
 }
 </style>
 
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<style type="text/css">
-.bs-example {
-	margin: 20px;
-}
-</style>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-
-	<div id="myModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">&times;</button>
-					<h4 class="modal-title">Edit</h4>
-				</div>
-				<div class="modal-body">
-					<div class="col-xs-5"></div>
-				</div>
-				<div class="form-group"></div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
 
 	<div class="container">
 
@@ -109,8 +82,7 @@ footer {
 				</div>
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<li><a
-							href="${pageContext.request.contextPath}/adminProfile.html">${sessionScope.user.userName}</a></li>
+						<li><a href="profile.html">${sessionScope.user.userName}</a></li>
 						<li><a href="${pageContext.request.contextPath}/logout.html">Logout</a></li>
 					</ul>
 				</div>
@@ -122,22 +94,51 @@ footer {
 		<!-- Main component for a primary marketing message or call to action -->
 
 		<div class="jumbotron">
-			<h2>Add Stock</h2>
-			<form:form method="POST" commandName="stock" class="form-signin">
-				<form:input path="title" class="form-control" placeholder="Title" />
-				<form:input path="manufacturer" class="form-control"
-					placeholder="Manufacturer" />
-				<form:select path="category" items="${categories}"
-					placeholder="Category" class="form-control" />
-				<form:input path="price" class="form-control" placeholder="Price" />
-				<form:input path="quantity" class="form-control"
-					placeholder="Quantity" />
-				<form:input path="filePath" type="file" class="form-control"/>	
-				<div class="form-group">
-					<input type="submit" value="Submit"
-						class="btn btn-large btn-success" />
-				</div>
-			</form:form>
+		<h2>User</h2>
+			<table class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Billing Address</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>${userForAdmin.userName}</td>
+						<td>${userForAdmin.account.address}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="jumbotron">
+		<h2>Orders</h2>
+			<table class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Manufacturer</th>
+						<th>Category</th>
+						<th>Price</th>
+					</tr>
+				</thead>
+				<c:forEach items="${userOrders}" var="order">
+					<c:forEach items="${order.lineitems}" var="lineitem">
+						<tbody>
+							<c:if test="${sessionScope != null}">
+
+								<tr>
+									<td><c:out value="${lineitem.stock.title}" /></td>
+									<td><c:out value="${lineitem.stock.manufacturer}" /></td>
+									<td><c:out value="${lineitem.stock.category.categoryTitle}" /></td>
+									<td><c:out value="€${lineitem.stock.price}" /></td>
+								</tr>
+
+							</c:if>
+						</tbody>
+					</c:forEach>
+				</c:forEach>
+			</table>
 		</div>
 	</div>
 	<!-- /container -->

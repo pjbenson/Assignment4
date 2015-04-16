@@ -26,7 +26,7 @@ import com.spring.service.StockService;
 import com.spring.service.UserService;
 
 @Controller
-@SessionAttributes("adminSortedStock")
+@SessionAttributes({"adminSortedStock", "user"})
 public class AdminController {
 	
 	@Autowired
@@ -49,6 +49,14 @@ public class AdminController {
 		model.addAttribute("stock", stock);
 		model.addAttribute("adminSearchObject", new SearchStockForm());
 		return new ModelAndView("adminProfile");
+	}
+	
+	@RequestMapping(value = "/user/{id}")
+	public ModelAndView getUser(@PathVariable("id") Integer id, ModelMap model){
+		User user = userService.getUser(id);
+		model.addAttribute("userForAdmin", user);
+		model.addAttribute("userOrders", user.getOrders());
+		return new ModelAndView("userOrders");
 	}
 	
 	@RequestMapping(value = "/addStock", method = RequestMethod.GET)

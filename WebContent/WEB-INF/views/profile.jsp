@@ -87,6 +87,7 @@ footer {
 				<div id="navbar" class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="">${sessionScope.user.userName}</a></li>
+						<li><a href="userOrders.html">orders</a></li>
 						<li><a href="addAccount.html">Add Account</a></li>
 						<li><a href="viewCart.html">Cart Items:${cartSize} </a></li>
 						<li><a href="${pageContext.request.contextPath}/logout.html">Logout</a></li>
@@ -158,6 +159,7 @@ footer {
 						<th>Manufacturer</th>
 						<th>Category</th>
 						<th>Quantity</th>
+						<th>Rating</th>
 						<th>Price</th>
 						<th>Add To Cart</th>
 					</tr>
@@ -167,13 +169,13 @@ footer {
 						<c:if test="${sessionScope != null}">
 
 							<tr>
-								<td><c:out value="${stock.title}" /></td>
+								<td><a href="<c:url value="/stock/${stock.id}.html" />">${stock.title}</a></td>
 								<td><c:out value="${stock.manufacturer}" /></td>
 								<td><c:out value="${stock.category.categoryTitle}" /></td>
 								<td><c:out value="${stock.quantity}" /></td>
+								<td><c:out value="${stock.rating}" /></td>
 								<td><c:out value="€${stock.price}" /></td>
-								<td><a href="<c:url value="/addToCart/${stock.id}.html" />"
-									class="btn btn-info btn-sm">Add to Cart</a></td>
+								<td><a href="<c:url value="/addToCart/${stock.id}.html" />" class="btn btn-info btn-sm">Add to Cart</a></td>
 							</tr>
 
 						</c:if>

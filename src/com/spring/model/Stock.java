@@ -27,12 +27,16 @@ public class Stock {
 	private String manufacturer;
 	private Double price;
 	private int quantity;
+	private int rating;
 	private String filePath;
 	@ManyToOne
 	private Category category;
 	@OneToMany(mappedBy="stock", fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<LineItem> lineitems;
+	@OneToMany(mappedBy="stock", fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<Review> reviews;
 	
 	public int getId() {
 		return id;
@@ -81,5 +85,17 @@ public class Stock {
 	}
 	public void setLineitems(List<LineItem> lineitems) {
 		this.lineitems = lineitems;
+	}
+	public List<Review> getReviews() {
+		return reviews;
+	}
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
+	}
+	public int getRating() {
+		return this.rating;
+	}
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 }

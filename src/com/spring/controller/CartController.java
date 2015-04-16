@@ -31,7 +31,7 @@ import com.spring.service.UserService;
 import com.spring.strategy.PaymentStrategy;
 
 @Controller
-@SessionAttributes({"user", "cart", "cartContents", "cartSize", "cartTotal", "creditCard"})
+@SessionAttributes({"user", "cart","order", "cartContents", "cartSize", "cartTotal", "creditCard", "lineitems"})
 public class CartController {
 	@Autowired
 	private OrderService orderService;
@@ -90,7 +90,7 @@ public class CartController {
 		chargeUserCreditCard(user.getAccount().getCreditCards().get(0), getCartTotal());
 		sessionCart.clear();
 		cart.clear();
-
+		
 		model.put("cartSize", cart.size());
 		model.put("cartTotal", getCartTotal());
 		return new ModelAndView("redirect:/orders.html");
@@ -114,7 +114,6 @@ public class CartController {
 	@RequestMapping("/removeStock/{id}")
 	public ModelAndView removeStock(@PathVariable("id") Integer id, ModelMap model){
 		cart.clear();
-		//TODO remove individual lineitem for list
 		model.put("cart", cart);
 		model.put("cartSize", cart.size());
 		model.put("cartTotal", getCartTotal());
@@ -124,14 +123,8 @@ public class CartController {
 	@RequestMapping(value = "/orders", method = RequestMethod.GET)
 	public ModelAndView showOrders(ModelMap model){
 		User user = (User) RequestContextHolder.currentRequestAttributes().getAttribute("user", RequestAttributes.SCOPE_SESSION);
-		System.out.println(user.getOrders().size());
-		for(Order o: user.getOrders()){
-			for(LineItem l: o.getLineitem()){
-				System.out.println(l.getStock().getManufacturer());
-			}
-		}
 		model.put("creditCard", user.getAccount().getCreditCards().get(0).getCardType());
-		model.put("orders", user.getOrders());
+		model.put("order", user.getOrders().get(user.getOrders().size()-1).getLineitems());
 		return new ModelAndView("orders");
 	}
 
